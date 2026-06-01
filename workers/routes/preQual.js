@@ -65,7 +65,7 @@ export async function handlePreQual(request, ctx, jsonResponse) {
 
 const VALID_PREFIXES = ['060','061','062','063','064','065','066','067','068','069',
   '071','072','073','074','075','076','077','078','079',
-  '081','082','083','084','085','086','087','');
+  '081','082','083','084','085','086','087''];
 
 function isValidSAMobile(number) {
   if (!number) return false;
