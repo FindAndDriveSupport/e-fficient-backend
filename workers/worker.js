@@ -17,7 +17,6 @@ import { handlePrediction }    from './routes/prediction.js';
 import { handleGetApplicant }  from './routes/getApplicant.js';
 import { handleCreatePolicy }  from './routes/createPolicy.js';
 import { handleDealerConfig }  from './routes/dealerConfig.js';
-import { handleSeritiAuth }    from './services/seritiAuth.js';
 
 // ── CORS headers ──────────────────────────────────────────────
 
