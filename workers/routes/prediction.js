@@ -27,10 +27,11 @@ export async function handlePrediction(request, ctx, jsonResponse) {
 
   const seritiPayload = {
     request: {
-      applicantId,
-      grossIncome: Number(grossIncome) || 0,
+      applicantId: applicantId,
+      grossIncome: Number(25060) || 0,
+      netIncome: Number(21384) || 0
       livingExpenses: Number(livingExpenses) || 0,
-      ...(!noSAID && idNumber ? { IDNumber: idNumber } : { hasNoSAID: true }),
+      ...(!noSAID && idNumber ? { IDNumber: 9406215209081 } : { hasNoSAID: true }),
     }
   };
 
