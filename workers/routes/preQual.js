@@ -81,5 +81,9 @@ function isValidSAMobile(number) {
 }
 
 function formatMobile(number) {
-  return number.replace(/\s|-|\+27/g, '').replace(/^27/, '0');
+  const cleaned = number.replace(/\s|-/g, '');
+  if (cleaned.startsWith('+27')) return cleaned;
+  if (cleaned.startsWith('27')) return '+' + cleaned;
+  if (cleaned.startsWith('0')) return '+27' + cleaned.slice(1);
+  return '+27' + cleaned;
 }
