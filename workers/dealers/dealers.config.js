@@ -24,7 +24,8 @@ export const DEALERS = {
     allowedDomains: [
       'findndrive.co.za',
       'www.findndrive.co.za',
-      'localhost',                            // ← dev only; remove in production
+      'localhost',
+      'findanddrivesupport-e-fficient-ui.still-fire-1c3d.workers.dev',
     ],
     mixpanelToken: 'YOUR_MIXPANEL_TOKEN',    // ← single MP account; refer domain identifies dealer
     theme: {
