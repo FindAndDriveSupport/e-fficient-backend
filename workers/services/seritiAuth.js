@@ -29,7 +29,7 @@ export async function getSeritiToken(env) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      apiKey: env.SERITI_API_KEY,
+      ApiKeyId: env.SERITI_API_KEY,
       apiSecret: env.SERITI_API_SECRET,
     }),
   });
