@@ -12,14 +12,15 @@ export async function handlePrediction(request, ctx, jsonResponse) {
   try { body = await request.json(); }
   catch { return jsonResponse({ error: 'Invalid JSON body' }, 400, origin, env); }
 
-  const { applicantId, grossIncome, idNumber, hasNoSAID, livingExpenses } = body;
+  const { applicantId, grossIncome, idNumber, hasSAID, hasNoSAID, livingExpenses } = body;
 
   if (!applicantId) {
     return jsonResponse({ error: 'Missing applicantId' }, 400, origin, env);
   }
 
-  // ID validation (skip if hasNoSAID)
-  if (!hasNoSAID) {
+  // ID validation (skip if no SA ID)
+  const noSAID = hasNoSAID || !hasSAID;
+  if (!noSAID) {
     const idError = validateSAID(idNumber);
     if (idError) return jsonResponse({ error: idError }, 400, origin, env);
   }
@@ -27,9 +28,9 @@ export async function handlePrediction(request, ctx, jsonResponse) {
   const seritiPayload = {
     request: {
       applicantId,
-      grossIncome: Number(grossIncome),
+      grossIncome: Number(grossIncome) || 0,
       livingExpenses: Number(livingExpenses) || 0,
-      ...(hasNoSAID ? { hasNoSAID: true } : { IDNumber: idNumber }),
+      ...(!noSAID && idNumber ? { IDNumber: idNumber } : { hasNoSAID: true }),
     }
   };
 
