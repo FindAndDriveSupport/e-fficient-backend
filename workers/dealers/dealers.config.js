@@ -20,7 +20,7 @@ export const DEALERS = {
   // ─────────────────────────────────────────────────────────────
   'findndrive': {
     name: 'FindnDrive',
-    branchCode: 'FND001',                    // ← Edith BranchCode
+    branchCode: 'SRT001EM',                    // ← Edith BranchCode
     allowedDomains: [
       'findndrive.co.za',
       'www.findndrive.co.za',
