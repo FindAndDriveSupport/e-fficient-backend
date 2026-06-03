@@ -19,7 +19,15 @@ id       = "16c7bf807bc0445ab0420a16f2352c0d"
 # ── Environment Variables (non-secret) ───────────────────────
 [vars]
 WORKER_ENV = "production"
+cat >> wrangler.toml << 'EOF'
 
+[observability.logs]
+enabled = true
+invocation_logs = true
+EOF
+git add wrangler.toml
+git commit -m "Enable observability logs"
+git push
 # ── Secrets (set via wrangler secret put) ────────────────────
 # DO NOT put real values here. Use: wrangler secret put SECRET_NAME
 #
@@ -40,3 +48,7 @@ WORKER_ENV = "development"
 # [[routes]]
 # pattern = "api.yourwidgetdomain.co.za/*"
 # zone_name = "yourwidgetdomain.co.za"
+
+[observability.logs]
+enabled = true
+invocation_logs = true
