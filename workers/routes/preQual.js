@@ -42,16 +42,20 @@ export async function handlePreQual(request, ctx, jsonResponse) {
     hasDeposit: body.hasDeposit || false,
     hasExistingFinance: body.hasExistingFinance || false,
     branchCode: dealerConfig.branchCode,
-    // Vehicle details from query params (optional)
     ...(body.vehicleMake  ? { vehicleMake: body.vehicleMake }   : {}),
     ...(body.vehicleModel ? { vehicleModel: body.vehicleModel } : {}),
     ...(body.vehicleMm    ? { vehicleMm: body.vehicleMm }       : {}),
   };
 
-  const result = await seritiRequest('/api/Financing/Pre-Qualification', {
-    method: 'POST',
-    body: JSON.stringify(seritiPayload),
-  }, env);
+  let result;
+  try {
+    result = await seritiRequest('/api/Financing/Pre-Qualification', {
+      method: 'POST',
+      body: JSON.stringify(seritiPayload),
+    }, env);
+  } catch (err) {
+    return jsonResponse({ error: 'Seriti API error', details: err.message }, 502, origin, env);
+  }
 
   // Return only what the frontend needs
   return jsonResponse({
@@ -70,11 +74,8 @@ const VALID_PREFIXES = ['060','061','062','063','064','065','066','067','068','0
 function isValidSAMobile(number) {
   if (!number) return false;
   const cleaned = number.replace(/\s|-/g, '');
-  // Reject landlines (starts with 01x)
   if (/^01/.test(cleaned)) return false;
-  // Must be 10 digits, start with 0
   if (!/^0[6-8]\d{8}$/.test(cleaned)) return false;
-  // Detect obviously fake (all same digit)
   if (/^(\d)\1+$/.test(cleaned)) return false;
   return true;
 }
