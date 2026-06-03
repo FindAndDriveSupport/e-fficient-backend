@@ -25,16 +25,23 @@ export async function handlePrediction(request, ctx, jsonResponse) {
   }
 
   const seritiPayload = {
-    applicantId,
-    grossIncome: Number(grossIncome),
-    livingExpenses: Number(livingExpenses) || 0,
-    ...(hasNoSAID ? { hasNoSAID: true } : { idNumber }),
+    request: {
+      applicantId,
+      grossIncome: Number(grossIncome),
+      livingExpenses: Number(livingExpenses) || 0,
+      ...(hasNoSAID ? { hasNoSAID: true } : { idNumber }),
+    }
   };
 
-  const result = await seritiRequest('/api/Financing/Prediction', {
-    method: 'POST',
-    body: JSON.stringify(seritiPayload),
-  }, env);
+  let result;
+  try {
+    result = await seritiRequest('/api/Financing/Prediction', {
+      method: 'POST',
+      body: JSON.stringify(seritiPayload),
+    }, env);
+  } catch (err) {
+    return jsonResponse({ error: 'Seriti API error', details: err.message }, 502, origin, env);
+  }
 
   // Map prediction labels per spec
   const predictionMap = {
@@ -50,7 +57,7 @@ export async function handlePrediction(request, ctx, jsonResponse) {
     prediction: predictionMap[predKey] || predictionMap.Low,
     reason: result.reason,
     estimatedApprovalAmount: result.estimatedApprovalAmount,
-    monthlyInstalment: result.estimatedFinanceSpend, // renamed per spec
+    monthlyInstalment: result.estimatedFinanceSpend,
   }, 200, origin, env);
 }
 
