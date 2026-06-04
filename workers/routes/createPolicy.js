@@ -9,7 +9,7 @@
 
 import { STATUS_CODES, SYSTEM_MESSAGES, FIELD_ERRORS, parseEdithErrors } from '../utils/edithErrors.js';
 
-const EDITH_WSDL = 'https://webservices.seritisolutions.co.za/PolicyService/PolicyService.svc';
+const EDITH_WSDL_DEFAULT = 'https://www.seritisolutions.co.za/demows/PolicyServicesV300.asmx';
 
 export async function handleCreatePolicy(request, ctx, jsonResponse) {
   const { env, dealerConfig, origin } = ctx;
@@ -22,9 +22,20 @@ export async function handleCreatePolicy(request, ctx, jsonResponse) {
   const salesRef = generateSalesRef(dealerConfig.branchCode);
   const xml = buildEdithXML(body, env, dealerConfig, salesRef);
 
+  console.log(JSON.stringify({
+    level: 'info',
+    type: 'edith_create_policy_request',
+    salesRef,
+    dealerKey: dealerConfig.key,
+    branchCode: dealerConfig.branchCode,
+    payload: body,
+    xml,
+    ts: new Date().toISOString(),
+  }));
+
   let edithResponse;
   try {
-    const res = await fetch(EDITH_WSDL, {
+    const res = await fetch(EDITH_WSDL_DEFAULT, {
       method: 'POST',
       headers: {
         'Content-Type': 'text/xml; charset=utf-8',
@@ -33,6 +44,14 @@ export async function handleCreatePolicy(request, ctx, jsonResponse) {
       body: xml,
     });
     const text = await res.text();
+    console.log(JSON.stringify({
+      level: 'info',
+      type: 'edith_create_policy_response',
+      salesRef,
+      status: res.status,
+      body: text,
+      ts: new Date().toISOString(),
+    }));
     edithResponse = parseEdithXMLResponse(text);
   } catch (err) {
     logError('edith_network_error', err, env, { salesRef, dealerKey: dealerConfig.key });
