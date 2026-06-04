@@ -15,6 +15,12 @@ WORKER_ENV = "production"
 enabled = true
 invocation_logs = true
 
+
+[[d1_databases]]
+binding = "DB"
+database_name = "postal-codes-db"
+database_id = "a518623c-f74b-4889-98da-d9ddda0ff632"
+
 [env.development]
 name = "efficient-finance-widget-dev"
 
