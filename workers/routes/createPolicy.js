@@ -52,6 +52,7 @@ export async function handleCreatePolicy(request, ctx, jsonResponse) {
       body: text,
       ts: new Date().toISOString(),
     }));
+    console.error("EDITH_RAW_RESPONSE: " + text);
     edithResponse = parseEdithXMLResponse(text);
   } catch (err) {
     logError('edith_network_error', err, env, { salesRef, dealerKey: dealerConfig.key });
