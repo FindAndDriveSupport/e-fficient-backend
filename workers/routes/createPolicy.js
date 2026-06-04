@@ -214,7 +214,7 @@ function generateSalesRef(branchCode) {
 function parseEdithXMLResponse(xml) {
   // Basic XML parsing — extract key elements
   const getTag = (tag) => {
-    const match = xml.match(new RegExp(`<[^>]*${tag}[^>]*>([^<]*)<`));
+    const match = xml.match(new RegExp(`<[^>]*${tag}[^>]*>([^<]*)<`, 'i'));
     return match ? match[1].trim() : null;
   };
   const statusCode = parseInt(getTag('StatusCode') || getTag('ReturnCode') || '100');
