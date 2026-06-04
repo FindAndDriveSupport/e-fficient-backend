@@ -39,7 +39,7 @@ export async function handleCreatePolicy(request, ctx, jsonResponse) {
       method: 'POST',
       headers: {
         'Content-Type': 'text/xml; charset=utf-8',
-        'SOAPAction': 'http://tempuri.org/IPolicyService/CreatePolicy',
+        'SOAPAction': 'http://ws.edith.co.za/EdithServices/PolicyServicesV300/CreatePolicy',
       },
       body: xml,
     });
