@@ -156,13 +156,9 @@ function buildEdithXML(data, env, dealer, salesRef) {
             ${d.physicalAddressDate ? `<tem:PhysicalAddressDate>${esc(d.physicalAddressDate)}</tem:PhysicalAddressDate>` : ''}
           </tem:PhysicalAddress>` : ''}
           ${d.nextOfKinFirstName ? `
-          <tem:Relative>
-            <tem:FirstName>${esc(d.nextOfKinFirstName)}</tem:FirstName>
-            <tem:LastName>${esc(d.nextOfKinLastName || '')}</tem:LastName>
-            <tem:MobileNumber>${d.nextOfKinMobile || ''}</tem:MobileNumber>
-            <tem:Relation>OTHER</tem:Relation>
-          </tem:Relative>` : ''}
-          <tem:Employment>
+            <tem:EmergencyContactName1>${esc(d.nextOfKinFirstName)} ${esc(d.nextOfKinLastName || '')}</tem:EmergencyContactName1>
+            <tem:EmergencyContactNumber1>${d.nextOfKinMobile || ''}</tem:EmergencyContactNumber1>` : ''}
+            <tem:Employment>
             ${d.employmentType ? `<tem:EmploymentType>${esc(d.employmentType)}</tem:EmploymentType>` : ''}
             ${d.employerName   ? `<tem:EmployerName>${esc(d.employerName)}</tem:EmployerName>` : ''}
             ${d.occupation     ? `<tem:Occupation>${esc(d.occupation)}</tem:Occupation>` : ''}
