@@ -22,6 +22,7 @@ export async function handleCreatePolicy(request, ctx, jsonResponse) {
   const salesRef = generateSalesRef(dealerConfig.branchCode);
   console.error("EDITH_PAYLOAD: " + JSON.stringify(body));
   const xml = buildEdithXML(body, env, dealerConfig, salesRef);
+  console.error("EDITH_XML: " + xml);
 
   console.log(JSON.stringify({
     level: 'info',
