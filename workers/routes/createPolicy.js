@@ -147,14 +147,14 @@ function buildEdithXML(data, env, dealer, salesRef) {
           ${d.idNumber      ? `<tem:IDType>${esc(d.idType || 'RSA ID')}</tem:IDType><tem:IDNumber>${d.idNumber}</tem:IDNumber>` : '<tem:IDType>FOREIGN NATIONAL</tem:IDType>'}
           ${d.maritalStatus ? `<tem:MaritalStatus>${esc(d.maritalStatus)}</tem:MaritalStatus>` : ''}
           ${d.address1 ? `
-          <tem:ResidentialAddress>
+          <tem:PhysicalAddress>
             <tem:Address1>${esc(d.address1)}</tem:Address1>
             ${d.suburb ? `<tem:Suburb>${esc(d.suburb)}</tem:Suburb>` : ''}
             ${d.city ? `<tem:City>${esc(d.city)}</tem:City>` : ''}
             ${d.postCode ? `<tem:PostCode>${esc(d.postCode)}</tem:PostCode>` : ''}
             ${d.residentialStatus ? `<tem:ResidentialStatus>${esc(d.residentialStatus)}</tem:ResidentialStatus>` : ''}
-            ${d.physicalAddressDate ? `<tem:ResidentialAddressDate>${esc(d.physicalAddressDate)}</tem:ResidentialAddressDate>` : ''}
-          </tem:ResidentialAddress>` : ''}
+            ${d.physicalAddressDate ? `<tem:PhysicalAddressDate>${esc(d.physicalAddressDate)}</tem:PhysicalAddressDate>` : ''}
+          </tem:PhysicalAddress>` : ''}
           ${d.nextOfKinFirstName ? `
           <tem:Relative>
             <tem:FirstName>${esc(d.nextOfKinFirstName)}</tem:FirstName>
@@ -172,7 +172,7 @@ function buildEdithXML(data, env, dealer, salesRef) {
             ${d.salaryDay      ? `<tem:SalaryDay>${d.salaryDay}</tem:SalaryDay>` : ''}
             ${d.basicSalary    ? `<tem:BasicSalary>${d.basicSalary}</tem:BasicSalary>` : ''}
             ${d.nettSalary     ? `<tem:NettSalary>${d.nettSalary}</tem:NettSalary>` : ''}
-            <tem:SourceOfIncome>SALARY</tem:SourceOfIncome>
+            <tem:FundsSource>SALARY</tem:FundsSource>
           </tem:Employment>
           <tem:FinanceApplication>
             <tem:CompanyCode>${env.EDITH_COMPANY_CODE}</tem:CompanyCode>
