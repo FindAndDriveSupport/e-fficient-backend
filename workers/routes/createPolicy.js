@@ -122,11 +122,11 @@ function buildEdithXML(data, env, dealer, salesRef) {
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://ws.edith.co.za/EdithServices/PolicyServicesV300">
   <soap:Body>
     <tem:CreatePolicy>
-      <tem:policy>
-        <tem:Credentials>
-          <tem:CompanyCode>${env.EDITH_COMPANY_CODE}</tem:CompanyCode>
-          <tem:CompanyPassword>${env.EDITH_COMPANY_PASS}</tem:CompanyPassword>
-        </tem:Credentials>
+      <tem:Credentials>
+        <tem:CompanyCode>${env.EDITH_COMPANY_CODE}</tem:CompanyCode>
+        <tem:CompanyPassword>${env.EDITH_COMPANY_PASS}</tem:CompanyPassword>
+      </tem:Credentials>
+      <tem:Policy>
         <tem:Policy>
           <tem:BranchCode>${dealer.branchCode}</tem:BranchCode>
           <tem:SalesReferenceNumber>${salesRef}</tem:SalesReferenceNumber>
