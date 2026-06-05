@@ -116,7 +116,7 @@ export async function handleCreatePolicy(request, ctx, jsonResponse) {
 // Reference: edith-createpolicy-data-mapping.html
 
 function buildEdithXML(data, env, dealer, salesRef) {
-  const d = data; // shorthand
+  const d = data;
 
   return `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://ws.edith.co.za/EdithServices/PolicyServicesV300">
@@ -127,77 +127,66 @@ function buildEdithXML(data, env, dealer, salesRef) {
         <tem:CompanyPassword>${env.EDITH_COMPANY_PASS}</tem:CompanyPassword>
       </tem:Credentials>
       <tem:Policy>
-        <tem:Policy>
-          <tem:BranchCode>${dealer.branchCode}</tem:BranchCode>
-          <tem:SalesReferenceNumber>${salesRef}</tem:SalesReferenceNumber>
-          <tem:TransactionType>VEHICLE SALE</tem:TransactionType>
-          <tem:Category>PRIVATE</tem:Category>
-          ${d.vehicleMake    ? `<tem:Manufacturer>${d.vehicleMake}</tem:Manufacturer>` : ''}
-          ${d.vehicleModel   ? `<tem:Model>${d.vehicleModel}</tem:Model>` : ''}
-          ${d.vehicleMm      ? `<tem:VehicleCode>${d.vehicleMm}</tem:VehicleCode>` : ''}
-          ${d.estimatedApprovalAmount ? `<tem:RetailPrice>${d.estimatedApprovalAmount}</tem:RetailPrice>` : ''}
-          <tem:NewUsed>USED</tem:NewUsed>
-          <tem:Client>
-            ${d.title      ? `<tem:Title>${d.title.toUpperCase()}</tem:Title>` : ''}
-            ${d.firstName  ? `<tem:FirstName>${esc(d.firstName)}</tem:FirstName>` : ''}
-            <tem:LastName>${esc(d.lastName)}</tem:LastName>
-            ${d.mobileNumber ? `<tem:MobileNumber>${d.mobileNumber}</tem:MobileNumber>` : ''}
-            ${d.emailAddress ? `<tem:EmailAddress>${esc(d.emailAddress)}</tem:EmailAddress>` : ''}
-            ${d.idNumber    ? `<tem:IDType>RSA ID</tem:IDType><tem:IDNumber>${d.idNumber}</tem:IDNumber>` : '<tem:IDType>FOREIGN NATIONAL</tem:IDType>'}
-            ${d.gender      ? `<tem:Gender>${d.gender.toUpperCase()}</tem:Gender>` : ''}
-            ${d.birthDate   ? `<tem:BirthDate>${d.birthDate}</tem:BirthDate>` : ''}
-            ${d.educationLevel ? `<tem:EducationLevel>${d.educationLevel}</tem:EducationLevel>` : ''}
-            ${d.maritalStatus ? `<tem:MaritalStatus>${d.maritalStatus}</tem:MaritalStatus>` : ''}
-            ${d.address1 ? `
-            <tem:ResidentialAddress>
-              <tem:Address1>${esc(d.address1)}</tem:Address1>
-              ${d.suburb   ? `<tem:Suburb>${esc(d.suburb)}</tem:Suburb>` : ''}
-              ${d.city     ? `<tem:City>${esc(d.city)}</tem:City>` : ''}
-              ${d.province ? `<tem:Province>${d.province}</tem:Province>` : ''}
-              ${d.postCode ? `<tem:PostCode>${d.postCode}</tem:PostCode>` : ''}
-              <tem:Country>${d.country || 'ZA'}</tem:Country>
-              ${d.residentialStatus ? `<tem:ResidentialStatus>${d.residentialStatus}</tem:ResidentialStatus>` : ''}
-            </tem:ResidentialAddress>` : ''}
-            ${d.nextOfKinFirstName ? `
-            <tem:Relative>
-              <tem:FirstName>${esc(d.nextOfKinFirstName)}</tem:FirstName>
-              <tem:LastName>${esc(d.nextOfKinLastName || '')}</tem:LastName>
-              <tem:MobileNumber>${d.nextOfKinMobile || ''}</tem:MobileNumber>
-              <tem:Relation>${d.nextOfKinRelation || 'OTHER'}</tem:Relation>
-            </tem:Relative>` : ''}
-            <tem:Employment>
-              ${d.employmentType ? `<tem:EmploymentType>${d.employmentType}</tem:EmploymentType>` : ''}
-              ${d.employerName   ? `<tem:EmployerName>${esc(d.employerName)}</tem:EmployerName>` : ''}
-              ${d.industry       ? `<tem:Industry>${d.industry}</tem:Industry>` : ''}
-              ${d.occupation     ? `<tem:Occupation>${d.occupation}</tem:Occupation>` : ''}
-              ${d.occupationLevel ? `<tem:OccupationLevel>${d.occupationLevel}</tem:OccupationLevel>` : ''}
-              ${d.currentEmploymentStartDate ? `<tem:CurrentEmploymentStartDate>${d.currentEmploymentStartDate}</tem:CurrentEmploymentStartDate>` : ''}
-              ${d.workTelCode ? `
-              <tem:WorkTelephoneCode>${d.workTelCode}</tem:WorkTelephoneCode>
-              <tem:WorkTelephoneNumber>${d.workTelNumber}</tem:WorkTelephoneNumber>` : ''}
-              ${d.salaryDay ? `<tem:SalaryDay>${d.salaryDay}</tem:SalaryDay>` : ''}
-              ${d.basicSalary ? `<tem:BasicSalary>${d.basicSalary}</tem:BasicSalary>` : ''}
-              ${d.nettSalary  ? `<tem:NettSalary>${d.nettSalary}</tem:NettSalary>` : ''}
-            </tem:Employment>
-            <tem:FinanceApplication>
-              <tem:CompanyCode>${env.EDITH_COMPANY_CODE}</tem:CompanyCode>
-              ${d.financeTerm ? `<tem:FinanceTerm>${d.financeTerm}</tem:FinanceTerm>` : ''}
-              ${d.depositAmount ? `<tem:DepositValue>${d.depositAmount}</tem:DepositValue>` : ''}
-              <tem:AgreementType>INSTALMENT SALE</tem:AgreementType>
-              <tem:PaymentMethod>DEBIT ORDER</tem:PaymentMethod>
-              ${d.paymentDay ? `<tem:PaymentDay>${d.paymentDay}</tem:PaymentDay>` : ''}
-            </tem:FinanceApplication>
-            <tem:Consents>
-              <tem:DataAttestationInd>${d.dataAttestation ? 'true' : 'false'}</tem:DataAttestationInd>
-              <tem:TelesalesMarketingConsentInd>${d.telesalesConsent ? 'true' : 'false'}</tem:TelesalesMarketingConsentInd>
-              <tem:EmailMarketingConsentInd>${d.emailConsent ? 'true' : 'false'}</tem:EmailMarketingConsentInd>
-              <tem:SMSMarketingConsentInd>${d.smsConsent ? 'true' : 'false'}</tem:SMSMarketingConsentInd>
-              <tem:IdxConsentInd>${d.idxConsent ? 'true' : 'false'}</tem:IdxConsentInd>
-              <tem:IvxConsentInd>${d.ivxConsent ? 'true' : 'false'}</tem:IvxConsentInd>
-            </tem:Consents>
-          </tem:Client>
-        </tem:Policy>
-      </tem:policy>
+        <tem:BranchCode>${dealer.branchCode}</tem:BranchCode>
+        <tem:SalesReferenceNumber>${salesRef}</tem:SalesReferenceNumber>
+        <tem:TransactionType>VEHICLE SALE</tem:TransactionType>
+        <tem:Category>PRIVATE</tem:Category>
+        ${d.vehicleMake    ? `<tem:Manufacturer>${esc(d.vehicleMake)}</tem:Manufacturer>` : ''}
+        ${d.vehicleModel   ? `<tem:Model>${esc(d.vehicleModel)}</tem:Model>` : ''}
+        ${d.vehicleMm      ? `<tem:VehicleCode>${esc(d.vehicleMm)}</tem:VehicleCode>` : ''}
+        ${d.estimatedApprovalAmount ? `<tem:RetailPrice>${d.estimatedApprovalAmount}</tem:RetailPrice>` : ''}
+        <tem:NewUsed>USED</tem:NewUsed>
+        <tem:Client>
+          ${d.title         ? `<tem:Title>${esc(d.title.toUpperCase())}</tem:Title>` : ''}
+          ${d.firstName     ? `<tem:FirstName>${esc(d.firstName)}</tem:FirstName>` : ''}
+          <tem:LastName>${esc(d.lastName)}</tem:LastName>
+          ${d.mobileNumber  ? `<tem:MobileNumber>${d.mobileNumber}</tem:MobileNumber>` : ''}
+          ${d.emailAddress  ? `<tem:EmailAddress>${esc(d.emailAddress)}</tem:EmailAddress>` : ''}
+          ${d.idNumber      ? `<tem:IDType>${esc(d.idType || 'RSA ID')}</tem:IDType><tem:IDNumber>${d.idNumber}</tem:IDNumber>` : '<tem:IDType>FOREIGN NATIONAL</tem:IDType>'}
+          ${d.maritalStatus ? `<tem:MaritalStatus>${esc(d.maritalStatus)}</tem:MaritalStatus>` : ''}
+          ${d.address1 ? `
+          <tem:ResidentialAddress>
+            <tem:Address1>${esc(d.address1)}</tem:Address1>
+            ${d.postalLocationId ? `<tem:PostalLocationId>${d.postalLocationId}</tem:PostalLocationId>` : ''}
+            ${d.residentialStatus ? `<tem:ResidentialStatus>${esc(d.residentialStatus)}</tem:ResidentialStatus>` : ''}
+            ${d.physicalAddressDate ? `<tem:ResidentialAddressDate>${esc(d.physicalAddressDate)}</tem:ResidentialAddressDate>` : ''}
+          </tem:ResidentialAddress>` : ''}
+          ${d.nextOfKinFirstName ? `
+          <tem:Relative>
+            <tem:FirstName>${esc(d.nextOfKinFirstName)}</tem:FirstName>
+            <tem:LastName>${esc(d.nextOfKinLastName || '')}</tem:LastName>
+            <tem:MobileNumber>${d.nextOfKinMobile || ''}</tem:MobileNumber>
+            <tem:Relation>OTHER</tem:Relation>
+          </tem:Relative>` : ''}
+          <tem:Employment>
+            ${d.employmentType ? `<tem:EmploymentType>${esc(d.employmentType)}</tem:EmploymentType>` : ''}
+            ${d.employerName   ? `<tem:EmployerName>${esc(d.employerName)}</tem:EmployerName>` : ''}
+            ${d.occupation     ? `<tem:Occupation>${esc(d.occupation)}</tem:Occupation>` : ''}
+            ${d.occupationLevel ? `<tem:OccupationLevel>${esc(d.occupationLevel)}</tem:OccupationLevel>` : ''}
+            ${d.industry       ? `<tem:Industry>${esc(d.industry)}</tem:Industry>` : ''}
+            ${d.currentEmploymentStartDate ? `<tem:CurrentEmploymentStartDate>${esc(d.currentEmploymentStartDate)}</tem:CurrentEmploymentStartDate>` : ''}
+            ${d.salaryDay      ? `<tem:SalaryDay>${d.salaryDay}</tem:SalaryDay>` : ''}
+            ${d.basicSalary    ? `<tem:BasicSalary>${d.basicSalary}</tem:BasicSalary>` : ''}
+            ${d.nettSalary     ? `<tem:NettSalary>${d.nettSalary}</tem:NettSalary>` : ''}
+            <tem:SourceOfIncome>SALARY</tem:SourceOfIncome>
+          </tem:Employment>
+          <tem:FinanceApplication>
+            <tem:CompanyCode>${env.EDITH_COMPANY_CODE}</tem:CompanyCode>
+            ${d.depositAmount  ? `<tem:DepositValue>${d.depositAmount}</tem:DepositValue>` : ''}
+            <tem:AgreementType>INSTALMENT SALE</tem:AgreementType>
+            <tem:PaymentMethod>DEBIT ORDER</tem:PaymentMethod>
+            ${d.bureauExpenses ? `<tem:LoanRepayments>${d.bureauExpenses}</tem:LoanRepayments>` : ''}
+          </tem:FinanceApplication>
+          <tem:Consents>
+            <tem:DataAttestationInd>${d.dataAttestation ? 'true' : 'false'}</tem:DataAttestationInd>
+            <tem:TelesalesMarketingConsentInd>${d.marketingConsent ? 'true' : 'false'}</tem:TelesalesMarketingConsentInd>
+            <tem:EmailMarketingConsentInd>${d.marketingConsent ? 'true' : 'false'}</tem:EmailMarketingConsentInd>
+            <tem:SMSMarketingConsentInd>${d.marketingConsent ? 'true' : 'false'}</tem:SMSMarketingConsentInd>
+            <tem:IdxConsentInd>${d.financialAccessConsent ? 'true' : 'false'}</tem:IdxConsentInd>
+            <tem:IvxConsentInd>${d.financialAccessConsent ? 'true' : 'false'}</tem:IvxConsentInd>
+          </tem:Consents>
+        </tem:Client>
+      </tem:Policy>
     </tem:CreatePolicy>
   </soap:Body>
 </soap:Envelope>`;
