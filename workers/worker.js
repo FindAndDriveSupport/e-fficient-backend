@@ -19,6 +19,7 @@ import { handleCreatePolicy }  from './routes/createPolicy.js';
 import { handleDealerConfig }  from './routes/dealerConfig.js';
 import { handleAddressSearch } from './routes/addressSearch.js';
 
+import { handleLookups } from './routes/lookups.js';
 // ── CORS headers ──────────────────────────────────────────────
 
 function corsHeaders(origin, env) {
@@ -87,6 +88,9 @@ export default {
       // ── Seriti: Get Applicant (consent → Step 3 prefill) ──
       if (path === '/api/address-search' && method === 'GET') {
         return handleAddressSearch(request, ctx2, jsonResponse);
+      }
+      if (path.startsWith('/api/lookup/') && method === 'GET') {
+        return handleLookups(request, ctx2, jsonResponse);
       }
       if (path === '/api/financing/applicant' && method === 'GET') {
         return handleGetApplicant(request, ctx2, jsonResponse);
