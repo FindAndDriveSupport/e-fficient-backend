@@ -138,7 +138,7 @@ function buildEdithXML(data, env, dealer, salesRef) {
         ${d.vehicleMm      ? `<tem:VehicleCode>${esc(d.vehicleMm)}</tem:VehicleCode>` : ''}
         ${d.estimatedApprovalAmount ? `<tem:RetailPrice>${d.estimatedApprovalAmount}</tem:RetailPrice>` : ''}
         <tem:NewUsed>USED</tem:NewUsed>
-        <tem:Client>
+       <tem:Client>
           ${d.title         ? `<tem:Title>${esc(d.title.toUpperCase())}</tem:Title>` : ''}
           ${d.firstName     ? `<tem:FirstName>${esc(d.firstName)}</tem:FirstName>` : ''}
           <tem:LastName>${esc(d.lastName)}</tem:LastName>
@@ -149,33 +149,36 @@ function buildEdithXML(data, env, dealer, salesRef) {
           ${d.address1 ? `
           <tem:PhysicalAddress>
             <tem:Address1>${esc(d.address1)}</tem:Address1>
-            ${d.suburb ? `<tem:Suburb>${esc(d.suburb)}</tem:Suburb>` : ''}
-            ${d.city ? `<tem:City>${esc(d.city)}</tem:City>` : ''}
+            ${d.suburb   ? `<tem:Suburb>${esc(d.suburb)}</tem:Suburb>` : ''}
+            ${d.city     ? `<tem:City>${esc(d.city)}</tem:City>` : ''}
             ${d.postCode ? `<tem:PostCode>${esc(d.postCode)}</tem:PostCode>` : ''}
-            ${d.residentialStatus ? `<tem:ResidentialStatus>${esc(d.residentialStatus)}</tem:ResidentialStatus>` : ''}
-            ${d.physicalAddressDate ? `<tem:PhysicalAddressDate>${esc(d.physicalAddressDate)}</tem:PhysicalAddressDate>` : ''}
-          </tem:PhysicalAddress>` : ''}
+            <tem:Country>SOUTH AFRICA</tem:Country>
+          </tem:PhysicalAddress>
+          ${d.residentialStatus    ? `<tem:ResidentialStatus>${esc(d.residentialStatus)}</tem:ResidentialStatus>` : ''}
+          ${d.physicalAddressDate  ? `<tem:PhysicalAddressDate>${esc(d.physicalAddressDate)}</tem:PhysicalAddressDate>` : ''}` : ''}
           ${d.nextOfKinFirstName ? `
-            <tem:EmergencyContactName1>${esc(d.nextOfKinFirstName)} ${esc(d.nextOfKinLastName || '')}</tem:EmergencyContactName1>
-            <tem:EmergencyContactNumber1>${d.nextOfKinMobile || ''}</tem:EmergencyContactNumber1>` : ''}
-            <tem:Employment>
-            ${d.employmentType ? `<tem:EmploymentType>${esc(d.employmentType)}</tem:EmploymentType>` : ''}
-            ${d.employerName   ? `<tem:EmployerName>${esc(d.employerName)}</tem:EmployerName>` : ''}
-            ${d.occupation     ? `<tem:Occupation>${esc(d.occupation)}</tem:Occupation>` : ''}
-            ${d.occupationLevel ? `<tem:OccupationLevel>${esc(d.occupationLevel)}</tem:OccupationLevel>` : ''}
-            ${d.industry       ? `<tem:Industry>${esc(d.industry)}</tem:Industry>` : ''}
-            ${d.currentEmploymentStartDate ? `<tem:CurrentEmploymentStartDate>${esc(d.currentEmploymentStartDate)}</tem:CurrentEmploymentStartDate>` : ''}
-            ${d.salaryDay      ? `<tem:SalaryDay>${d.salaryDay}</tem:SalaryDay>` : ''}
-            ${d.basicSalary    ? `<tem:BasicSalary>${d.basicSalary}</tem:BasicSalary>` : ''}
-            ${d.nettSalary     ? `<tem:NettSalary>${d.nettSalary}</tem:NettSalary>` : ''}
-            <tem:FundsSource>SALARY</tem:FundsSource>
-          </tem:Employment>
+          <tem:Relative>
+            <tem:FirstName>${esc(d.nextOfKinFirstName)}</tem:FirstName>
+            <tem:LastName>${esc(d.nextOfKinLastName || '')}</tem:LastName>
+            <tem:MobileNumber>${d.nextOfKinMobile || ''}</tem:MobileNumber>
+          </tem:Relative>
+          <tem:RelativeRelation>OTHER</tem:RelativeRelation>` : ''}
+          ${d.employmentType ? `<tem:EmploymentType>${esc(d.employmentType)}</tem:EmploymentType>` : ''}
+          ${d.employerName   ? `<tem:EmployerName>${esc(d.employerName)}</tem:EmployerName>` : ''}
+          ${d.occupation     ? `<tem:Occupation>${esc(d.occupation)}</tem:Occupation>` : ''}
+          ${d.occupationLevel ? `<tem:OccupationLevel>${esc(d.occupationLevel)}</tem:OccupationLevel>` : ''}
+          ${d.industry       ? `<tem:Industry>${esc(d.industry)}</tem:Industry>` : ''}
+          ${d.currentEmploymentStartDate ? `<tem:CurrentEmploymentStartDate>${esc(d.currentEmploymentStartDate)}</tem:CurrentEmploymentStartDate>` : ''}
+          ${d.salaryDay      ? `<tem:SalaryDay>${d.salaryDay}</tem:SalaryDay>` : ''}
+          ${d.basicSalary    ? `<tem:BasicSalary>${Number(d.basicSalary).toFixed(2)}</tem:BasicSalary>` : ''}
+          ${d.nettSalary     ? `<tem:NettSalary>${Number(d.nettSalary).toFixed(2)}</tem:NettSalary>` : ''}
+          ${d.bureauExpenses ? `<tem:LoanRepayments>${Number(d.bureauExpenses).toFixed(2)}</tem:LoanRepayments>` : ''}
+          <tem:FundsSource>SALARY</tem:FundsSource>
           <tem:FinanceApplication>
             <tem:CompanyCode>${env.EDITH_COMPANY_CODE}</tem:CompanyCode>
-            ${d.depositAmount  ? `<tem:DepositValue>${d.depositAmount}</tem:DepositValue>` : ''}
+            ${d.depositAmount ? `<tem:DepositValue>${Number(d.depositAmount).toFixed(2)}</tem:DepositValue>` : ''}
             <tem:AgreementType>INSTALMENT SALE</tem:AgreementType>
             <tem:PaymentMethod>DEBIT ORDER</tem:PaymentMethod>
-            ${d.bureauExpenses ? `<tem:LoanRepayments>${d.bureauExpenses}</tem:LoanRepayments>` : ''}
           </tem:FinanceApplication>
           <tem:Consents>
             <tem:DataAttestationInd>${d.dataAttestation ? 'true' : 'false'}</tem:DataAttestationInd>
