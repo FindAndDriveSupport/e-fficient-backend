@@ -20,6 +20,7 @@ export async function handleCreatePolicy(request, ctx, jsonResponse) {
 
   // Build Edith XML payload
   const salesRef = generateSalesRef(dealerConfig.branchCode);
+  console.error("EDITH_PAYLOAD: " + JSON.stringify(body));
   const xml = buildEdithXML(body, env, dealerConfig, salesRef);
 
   console.log(JSON.stringify({
