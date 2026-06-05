@@ -148,7 +148,9 @@ function buildEdithXML(data, env, dealer, salesRef) {
           ${d.address1 ? `
           <tem:ResidentialAddress>
             <tem:Address1>${esc(d.address1)}</tem:Address1>
-            ${d.postalLocationId ? `<tem:PostalLocationId>${d.postalLocationId}</tem:PostalLocationId>` : ''}
+            ${d.suburb ? `<tem:Suburb>${esc(d.suburb)}</tem:Suburb>` : ''}
+            ${d.city ? `<tem:City>${esc(d.city)}</tem:City>` : ''}
+            ${d.postCode ? `<tem:PostCode>${esc(d.postCode)}</tem:PostCode>` : ''}
             ${d.residentialStatus ? `<tem:ResidentialStatus>${esc(d.residentialStatus)}</tem:ResidentialStatus>` : ''}
             ${d.physicalAddressDate ? `<tem:ResidentialAddressDate>${esc(d.physicalAddressDate)}</tem:ResidentialAddressDate>` : ''}
           </tem:ResidentialAddress>` : ''}
