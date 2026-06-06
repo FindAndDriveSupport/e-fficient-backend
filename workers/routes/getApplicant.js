@@ -11,7 +11,7 @@ import { seritiRequest } from '../services/seritiAuth.js';
 export async function handleGetApplicant(request, ctx, jsonResponse) {
   const { env, origin } = ctx;
   const url = new URL(request.url);
-  const applicantId = url.pathname.split('/').pop();
+  const applicantId = url.searchParams.get('applicantId');
 
   if (!applicantId) {
     return jsonResponse({ error: 'Missing applicantId' }, 400, origin, env);
